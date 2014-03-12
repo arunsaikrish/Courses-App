@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 
 	public static final String HOST_URL="http://courses.nitt.edu";
 	
+	
 	EditText username,password;
 	Button submit;
 	
