@@ -25,6 +25,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+	<activity
+            android:name="com.example.coursesapp.DepartmentsActivity"
+            android:label="@string/app_name" />
+	<activity
+            android:name="com.example.coursesapp.DepartmentsAdapter"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>
