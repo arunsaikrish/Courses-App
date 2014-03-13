@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -84,7 +85,12 @@ ArrayList<String> hodList = new  ArrayList<String>();
 				if(result.booleanValue())
 					{
 					//Toast.makeText(DepartmentsActivity.this, "Data Loaded", Toast.LENGTH_SHORT).show();
-					DepartmentsAdapter adp = new DepartmentsAdapter(DepartmentsActivity.this,deptList, hodList);
+					DisplayMetrics displaymetrics = new DisplayMetrics();
+					getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+					int height = displaymetrics.heightPixels;
+					int width = displaymetrics.widthPixels;
+					
+					DepartmentsAdapter adp = new DepartmentsAdapter(DepartmentsActivity.this,deptList, hodList,width,height);
 					lv.setAdapter(adp);
 					}
 				else

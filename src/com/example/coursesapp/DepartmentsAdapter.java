@@ -10,31 +10,29 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 
-public class DepartmentsAdapter extends BaseAdapter{
+public class DepartmentsAdapter extends BaseAdapter {
 
 	ArrayList<String> deptList = new ArrayList<String>();
-	ArrayList<String> hodList = new ArrayList<String>() ;
+	ArrayList<String> hodList = new ArrayList<String>();
 	LayoutInflater inflater;
 	Context context;
+	int width,height;
 
-	public DepartmentsAdapter(Context c,ArrayList<String> deptList,ArrayList<String> hodList)
-	{
+	public DepartmentsAdapter(Context c, ArrayList<String> deptList,ArrayList<String> hodList,int width,int height) {
 		this.deptList = deptList;
 		this.hodList = hodList;
-		for(int i=0;i < deptList.size();i++)
-			Log.i("LIST", deptList.get(i) + "--" +i);
-		for(int i=0;i < hodList.size();i++)
-			Log.d("LIST", hodList.get(i) + "--" +i);
+		this.width = width/2;
+		this.height = height/2;
+		
 		context = c;
-		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 	}
-	
-	
+
 	@Override
-	public int getCount() 
-	{
-		
+	public int getCount() {
+
 		return deptList.size();
 	}
 
@@ -48,39 +46,36 @@ public class DepartmentsAdapter extends BaseAdapter{
 		return arg0;
 	}
 	
-	
-	@Override
-	public View getView(int pos, View view, ViewGroup root) 
+	public class ViewHolder
 	{
-		
-		View vi = view;
-		Button tvHod,tvDept;
-		
+		Button bHod,bDept;
+	}
 
-		if (view == null) 
-		{
+	@Override
+	public View getView(int pos, View convertView, ViewGroup root) {
+		
+		View vi = convertView;
+		ViewHolder holder;
+		
+		if (convertView == null) {
 
 			/****** Inflate tabitem.xml file for each row ( Defined below ) *******/
 			vi = inflater.inflate(R.layout.department_row, null);
-			tvDept = (Button) vi.findViewById(R.id.tvDepartmentName);
-			tvHod = (Button) vi.findViewById(R.id.tvHodName);
-			
-			//holder.tvDept.setMaxWidth(vi.getWidth()/2);
-			//holder.tvHod.setMaxWidth(vi.getWidth()/2);
-			
-			tvDept.setText(deptList.get(pos));
-			Log.i("Adding", deptList.get(pos) + "--" +pos);
-			tvHod.setText(hodList.get(pos));
-		} 
-		else
-			Log.e("Error","errror");
-			
-
-		return vi;
-			
-			
-		}
+			holder = new ViewHolder();
+			holder.bHod = (Button) vi.findViewById(R.id.tvHodName);
+			holder.bDept = (Button) vi.findViewById(R.id.tvDepartmentName);
+			holder.bDept.setMaxWidth(width);
+			holder.bHod.setMaxWidth(width);
+			vi.setTag(holder);
+		} else
+			holder = (ViewHolder) vi.getTag();
 		
+		
+		holder.bHod.setText(hodList.get(pos));
+		holder.bDept.setText(deptList.get(pos));
+		
+		return vi;
+
 	}
 
-
+}
