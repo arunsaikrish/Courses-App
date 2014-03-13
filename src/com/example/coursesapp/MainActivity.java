@@ -17,11 +17,14 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -45,6 +48,8 @@ public class MainActivity extends Activity {
 	
 	String userNameGlobal,passwordGlobal;
 	
+	ProgressDialog pdia;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +57,8 @@ public class MainActivity extends Activity {
 		
 		username=(EditText)findViewById(R.id.uname);
 		password=(EditText)findViewById(R.id.pwd);
+		
+		password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		
 		submit=(Button)findViewById(R.id.submit);
 		
@@ -88,6 +95,29 @@ public class MainActivity extends Activity {
 				
 			}
 		});
+		
+	}
+	
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		String value = sharedpreferences.getString("user_id",null);
+		Toast.makeText(MainActivity.this, value, Toast.LENGTH_LONG).show();
+		
+		if (value != null) {
+		    // the key does not exist
+			
+			Intent intent;
+			
+			intent = new Intent(MainActivity.this, DepartmentsActivity.class);
+			startActivity(intent);
+			
+			finish();
+			
+		} 
 		
 	}
 
@@ -155,11 +185,22 @@ public class MainActivity extends Activity {
 	            return null;
 	        }
 	    }
+	    
+	    @Override
+		protected void onPreExecute() 
+		{
+			super.onPreExecute();
+			pdia = new ProgressDialog(MainActivity.this);
+			pdia.setMessage("Logging In ...");
+			pdia.show();
+		}
 
 	    @Override
 	    protected void onPostExecute(JSONObject result) {
 	    	
 	    	System.out.println("Inside on post execute");
+	    	
+	    	pdia.dismiss();
 	    	
 	    	String res;
 	    	
@@ -177,33 +218,40 @@ public class MainActivity extends Activity {
 					edit.putString("user_id", result.getString("user_id"));
 					edit.apply(); 
 					
+					Intent intent;
+					
+					intent = new Intent(MainActivity.this, DepartmentsActivity.class);
+					startActivity(intent);
+					
 				}else if(res.equals("0")){
 					
 					Log.d("Login status ", res);
 					Toast.makeText(MainActivity.this, "Wrong Password ... Try Again !", Toast.LENGTH_LONG).show();
-					username.setText("");
+					
 					password.setText("");
 					
 				}else if(res.equals("2")){
 					
 					Log.d("Login status ", res);
 					Toast.makeText(MainActivity.this, "Authenticate your account and try again ...", Toast.LENGTH_LONG).show();
-					username.setText("");
+					
 					password.setText("");
 					
 				}else {
 					
 					Log.d("Login status ", res);
 					Toast.makeText(MainActivity.this, "An error occured while logging in ... Please try again!", Toast.LENGTH_LONG).show();
-					username.setText("");
+					
 					password.setText("");
 					
 				}			
 				
 				
 			} catch (JSONException e) {
+				
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
 			}
 	    }
 	}
