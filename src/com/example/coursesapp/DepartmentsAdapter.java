@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.TextView;
 
 public class DepartmentsAdapter extends BaseAdapter {
 
@@ -48,7 +48,7 @@ public class DepartmentsAdapter extends BaseAdapter {
 	
 	public class ViewHolder
 	{
-		Button bHod,bDept;
+		TextView bHod,bDept;
 	}
 
 	@Override
@@ -62,10 +62,8 @@ public class DepartmentsAdapter extends BaseAdapter {
 			/****** Inflate tabitem.xml file for each row ( Defined below ) *******/
 			vi = inflater.inflate(R.layout.department_row, null);
 			holder = new ViewHolder();
-			holder.bHod = (Button) vi.findViewById(R.id.tvHodName);
-			holder.bDept = (Button) vi.findViewById(R.id.tvDepartmentName);
-			holder.bDept.setMaxWidth(width);
-			holder.bHod.setMaxWidth(width);
+			holder.bHod = (TextView) vi.findViewById(R.id.tvHodName);
+			holder.bDept = (TextView) vi.findViewById(R.id.tvDepartmentName);
 			vi.setTag(holder);
 		} else
 			holder = (ViewHolder) vi.getTag();

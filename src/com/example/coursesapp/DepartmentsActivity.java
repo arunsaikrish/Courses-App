@@ -13,10 +13,14 @@ import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ public class DepartmentsActivity extends Activity
 {
 ListView lv;
 ArrayList<String> deptList = new  ArrayList<String>();
+ArrayList<String> deptShort = new  ArrayList<String>();
 ArrayList<String> hodList = new  ArrayList<String>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -32,6 +37,16 @@ ArrayList<String> hodList = new  ArrayList<String>();
 		setContentView(R.layout.activity_departments);
 		lv = (ListView)findViewById(R.id.lvDepartmentsList);
 		loadDepts();
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View view, int pos,long arg3) 
+			{
+				Intent i = new Intent(DepartmentsActivity.this,DepartmentPage.class);
+				i.putExtra("dept", deptShort.get(pos));
+				startActivity(i);
+			}
+		});
 	}
 	
 
@@ -104,7 +119,7 @@ ArrayList<String> hodList = new  ArrayList<String>();
 		}
 		
 		LoadData ld = new LoadData();
-		ld.execute("http://courses.nitt.edu/departments.json");
+		ld.execute("http://www.courseshub.in/departments.json");
 		
 	}
 	
@@ -120,8 +135,8 @@ ArrayList<String> hodList = new  ArrayList<String>();
 			for(int i=0;i<jsonArray.length();i++)
 			{
 				deptList.add(jsonArray.getJSONObject(i).getString("name"));
+				deptShort.add(jsonArray.getJSONObject(i).getString("short"));
 				hodList.add(jsonArray.getJSONObject(i).getString("hod"));
-				Log.d("LIST", deptList.get(i) + "-->" + hodList.get(i));
 			}
 			return true;
 		}		
